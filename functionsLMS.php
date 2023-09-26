@@ -172,15 +172,15 @@ function getCanvasTopicList($arrCurlTopics, $authorization){
         //if there are more records to be returned, Canvas will have the link in the url in the header
         if(array_key_exists('next', $arrCurlTopics['headerLinks'])){
 	    $link_topics = trim($arrCurlTopics['headerLinks']['next']);	
-	    $arrCurlTopicsi = getCanvasAPIcurl($authorization, $arrCurlTopics['headerLinks']['next']);
+	    $arrCurlTopics = getCanvasAPIcurl($authorization, $arrCurlTopics['headerLinks']['next']);
             getCanvasTopicList($arrCurlTopics);
         }
 }
 function getCanvasTopicData($arrCurlTopic, $authorization, $topic_id){
         //save individual discussion topic post data into SESSION using the topic id as the key name
         $jsonData = json_decode($arrCurlTopic['body'], true);
-	echo($jsonData)
-        if($jsonData.status != "unauthenticated"){
+	
+        #if($jsonData.status != "unauthenticated"){
             $_SESSION['json_'.$topic_id] = $jsonData;
             $_SESSION['arrTopics'][$topic_id]['json'] = $jsonData;
             $_SESSION['arrTopics'][$topic_id]['settings'] = $_SESSION['topicList'][$topic_id];
@@ -206,11 +206,10 @@ function getCanvasTopicData($arrCurlTopic, $authorization, $topic_id){
             //);
             
             //if there are more records to be returned, Canvas will have the link in the url in the header
-	    if(array_key_exists('next', $arrCurlTopic['headerLinks'])){
+	    if($arrCurlTopic['headerLinks']){
 		$link_topics = trim($arrCurlTopic['headerLinks']['next']);
                 $arrCurlTopic=getCanvasAPIcurl($authorization, $arrCurlTopic['headerLinks']['next']);
                 getCanvasTopicData($arrCurlTopic, $authorization, $topic_id);
             }
         }
-}
 ?>

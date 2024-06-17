@@ -31,7 +31,7 @@ empty($_SESSION['messageArray']);
 unset($_SESSION['messageArray']);
 //////////////////////////////////////////////////////
 
-require_once("preferences.php");    
+require_once("preferences.php");
 require_once("functions.php");
 //require_once("ims-blti/blti.php");
 
@@ -83,26 +83,27 @@ if(!function_exists('curl_version')){
                 echo "Please ask Admin set LMS in Threadz launch.";
                 break;
         }
- 
+
 //////////////////////////////////////////////////////
 //testing the returned data from lti launch
     //foreach($_REQUEST as $key => $val){
     //    echo $key ." = " . $val . "<br>";
     //}
     //exit();
-    
+
 //////////////////////////////////////////////////////
 //roles, oauth_nonce and launch url provided back from lti launch data
 $_SESSION['rolesLTI'] = $_REQUEST['roles'];
 $_SESSION['roles'] = setRoles($_REQUEST['roles']);
 $_SESSION['token_state_id'] = $_REQUEST['oauth_nonce'];
 #$_SESSION['domainLMS'] = 'https://'. parse_url($_REQUEST['launch_presentation_return_url'], PHP_URL_HOST);
+$_SESSION['scope']="url:GET|/api/v1/courses/:course_id/enrollments url:GET|/api/v1/courses/:course_id/discussion_topics/:topic_id url:GET|/api/v1/courses/:course_id/discussion_topics";
 
 //////////////////////////////////////////////////////
 //Get the token for the user
 //redirects to the URI set in LTI
-header('Location: '. $_SESSION['domainLMS'].'/login/oauth2/auth?client_id='.$_SESSION['client_id'].'&response_type=code&redirect_uri='.$_SESSION['domainThreadz'].'/tokenAuth.php&state='.$_SESSION['token_state_id']);
-exit();   
+header('Location: '. $_SESSION['domainLMS'].'/login/oauth2/auth?client_id='.$_SESSION['client_id'].'&response_type=code&redirect_uri='.$_SESSION['domainThreadz'].'/tokenAuth.php&state='.$_SESSION['token_state_id'].'&scope='.$_SESSION['scope']);
+exit();
 
 
 

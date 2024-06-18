@@ -97,7 +97,7 @@ $_SESSION['rolesLTI'] = $_REQUEST['roles'];
 $_SESSION['roles'] = setRoles($_REQUEST['roles']);
 $_SESSION['token_state_id'] = $_REQUEST['oauth_nonce'];
 #$_SESSION['domainLMS'] = 'https://'. parse_url($_REQUEST['launch_presentation_return_url'], PHP_URL_HOST);
-$_SESSION['scope']="url:GET|/api/v1/courses/:course_id/enrollments url:GET|/api/v1/courses/:course_id/discussion_topics/:topic_id url:GET|/api/v1/courses/:course_id/discussion_topics";
+$_SESSION['scope']="url:GET|/api/v1/courses/:course_id/enrollments url:GET|/api/v1/courses/:course_id/discussion_topics/:topic_id url:GET|/api/v1/courses/:course_id/discussion_topics/:topic_id/view url:GET|/api/v1/courses/:course_id/discussion_topics";
 
 //////////////////////////////////////////////////////
 //Get the token for the user

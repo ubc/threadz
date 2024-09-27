@@ -28,7 +28,7 @@ include("functionsLMS.php");
 if($_SESSION['token_state_id'] == $state_test){
     //Post request with client_id, client_secret, and code (returned from above redirect) to /login/oauth2/token to obtain access token.
     $token_url = $_SESSION['domainLMS'].'/login/oauth2/token';
-    $token_data = array('client_id' => $_SESSION['client_id'], 'redirect_uri' => $_SESSION['domainThreadz'] . "/tokenAuth.php", 'client_secret' => $_SESSION['client_secret'], 'code' => $code);    
+    $token_data = array('client_id' => $_SESSION['client_id'], 'redirect_uri' => $_SESSION['domainThreadz'] . "/tokenAuth.php", 'client_secret' => $_SESSION['client_secret'], 'code' => $code);
 
     //http://stackoverflow.com/questions/5647461/how-do-i-send-a-post-request-with-php
     $token_options = array(
@@ -41,7 +41,7 @@ if($_SESSION['token_state_id'] == $state_test){
             'proxy' => $_SESSION['proxy'],
         ),
     );
-    
+
     $context  = stream_context_create($token_options);
     if($lms == 'canvas' & $_SESSION['proxy'] != NULL){
         //For those running off a proxy server and using Canvas
@@ -66,21 +66,23 @@ if($_SESSION['token_state_id'] == $state_test){
         $refresh_token = $jsonToken['refresh_token'];
         //Collect the data from the lms page
         include("lms/". $_SESSION['dataPage']);
-        
-////////////////////////////////////////////////////////        
+
+////////////////////////////////////////////////////////
 //testing the data saved into SESSION
     //foreach($_SESSION as $key => $val){
     //    echo $key ." = " . $val . "<br>";
     //}
     //exit();
-////////////////////////////////////////////////////////   
-    
+////////////////////////////////////////////////////////
+
         //redirect to display page
         header('Location: '.$_SESSION['domainThreadz'].'/threadz.php');
         exit();
     }
 }else{
     echo "Altered States.";
+    echo "request = " . $state_test;
+    echo "session = " . $_SESSION['token_state_id'];
     exit();
 }
 

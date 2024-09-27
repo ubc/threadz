@@ -81,10 +81,22 @@ if($_SESSION['token_state_id'] == $state_test){
     }
 }else{
     echo "Altered States.";
+    $logFile = "threadz.log";
     $msg1 = "request = " . $state_test;
     $msg2 = "session = " . $_SESSION['token_state_id'];
-    error_log($msg1, 3, "/var/log/threadz-php.log");
-    error_log($msg2, 3, "/var/log/threadz-php.log");
+
+    if(error_log($msg1, 3, $logFile)){
+        echo 'message 1 logged successfully';
+    }
+    else{
+        echo '[ERROR]messge 1 failed to log.';
+    }
+    if(error_log($msg2, 3, $logFile)){
+        echo 'message 1 logged successfully';
+    }
+    else{
+        echo '[ERROR]messge 1 failed to log.';
+    }
     exit();
 }
 

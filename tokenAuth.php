@@ -81,8 +81,10 @@ if($_SESSION['token_state_id'] == $state_test){
     }
 }else{
     echo "Altered States.";
-    echo "request = " . $state_test;
-    echo "session = " . $_SESSION['token_state_id'];
+    $msg1 = "request = " . $state_test;
+    $msg2 = "session = " . $_SESSION['token_state_id'];
+    error_log(msg1);
+    error_log(msg2);
     exit();
 }
 

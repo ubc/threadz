@@ -82,8 +82,9 @@ if($_SESSION['token_state_id'] == $state_test){
 }else{
     echo "Altered States.";
     $logFile = "threadz.log";
-    $msg1 = "request = " . $state_test;
-    $msg2 = "session = " . $_SESSION['token_state_id'];
+
+    $msg1 = "[tokenAuth.php] request = " . $state_test . "\n";
+    $msg2 = "[tokenAuth.php] session = " . $_SESSION['token_state_id'] . "\n";
 
     if(error_log($msg1, 3, $logFile)){
         echo 'message 1 logged successfully';

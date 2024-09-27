@@ -99,6 +99,24 @@ $_SESSION['token_state_id'] = $_REQUEST['oauth_nonce'];
 #$_SESSION['domainLMS'] = 'https://'. parse_url($_REQUEST['launch_presentation_return_url'], PHP_URL_HOST);
 $_SESSION['scope']="url:GET|/api/v1/courses/:course_id/enrollments url:GET|/api/v1/courses/:course_id/discussion_topics/:topic_id url:GET|/api/v1/courses/:course_id/discussion_topics/:topic_id/view url:GET|/api/v1/courses/:course_id/discussion_topics";
 
+
+$logFile = "threadz.log";
+$msg1 = "[launch.php] _session['token_state_id'] = " . $_SESSION['token_state_id'] . "\n";
+$msg2 = "[launch.php] _request['oauth_nonce'] = " . $_REQUEST['oauth_nonce'] . "\n";
+
+if(error_log($msg1, 3, $logFile)){
+    echo 'message 1 logged successfully';
+}
+else{
+    echo '[ERROR]messge 1 failed to log.';
+}
+if(error_log($msg2, 3, $logFile)){
+    echo 'message 2 logged successfully';
+}
+else{
+    echo '[ERROR]messge 2 failed to log.';
+}
+
 //////////////////////////////////////////////////////
 //Get the token for the user
 //redirects to the URI set in LTI

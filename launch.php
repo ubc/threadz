@@ -100,6 +100,11 @@ $_SESSION['token_state_id'] = $_REQUEST['oauth_nonce'];
 $_SESSION['scope']="url:GET|/api/v1/courses/:course_id/enrollments url:GET|/api/v1/courses/:course_id/discussion_topics/:topic_id url:GET|/api/v1/courses/:course_id/discussion_topics/:topic_id/view url:GET|/api/v1/courses/:course_id/discussion_topics";
 
 
+//////////////////////////////////////////////////////
+//Get the token for the user
+//redirects to the URI set in LTI
+header('Location: '. $_SESSION['domainLMS'].'/login/oauth2/auth?client_id='.$_SESSION['client_id'].'&response_type=code&redirect_uri='.$_SESSION['domainThreadz'].'/tokenAuth.php&state='.$_SESSION['token_state_id'].'&scope='.$_SESSION['scope']);
+
 $logFile = "threadz.log";
 $msg1 = "[launch.php] _session['token_state_id'] = " . $_SESSION['token_state_id'] . "\n";
 $msg2 = "[launch.php] _request['oauth_nonce'] = " . $_REQUEST['oauth_nonce'] . "\n";
@@ -117,12 +122,6 @@ else{
     echo '[ERROR]messge 2 failed to log.';
 }
 
-//////////////////////////////////////////////////////
-//Get the token for the user
-//redirects to the URI set in LTI
-header('Location: '. $_SESSION['domainLMS'].'/login/oauth2/auth?client_id='.$_SESSION['client_id'].'&response_type=code&redirect_uri='.$_SESSION['domainThreadz'].'/tokenAuth.php&state='.$_SESSION['token_state_id'].'&scope='.$_SESSION['scope']);
 exit();
-
-
 
 ?>

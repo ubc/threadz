@@ -89,20 +89,22 @@ if($_SESSION['token_state_id'] == $state_test){
     $msg2 = "[tokenAuth.php] session = " . $_SESSION['token_state_id'] . "\n";
 
     if(error_log($msg1, 3, $logFile)){
-        echo 'message 1 logged successfully';
+        echo 'message 1 logged successsfully';
     }
     else{
         echo '[ERROR]messge 1 failed to log.';
     }
     if(error_log($msg2, 3, $logFile)){
-        echo 'message 1 logged successfully';
+        echo 'message 2 logged successsfully';
     }
     else{
-        echo '[ERROR]messge 1 failed to log.';
+        echo '[ERROR]messge 2 failed to log.';
     }
-    foreach($_SESSION as $key=>$val){
-        $session_msg = "[tokenAuth.php] session key: ".$key.", value: ".$value;
-        error_log($session_msg, 3, $logFile);
+    if(    error_log("[tokenAuth.php]".$_SESSION, 3, $logFile)){
+        echo "message 3 logged successfully";
+    }
+    else{
+        echo '[ERROR]messge 3 failed to log.';
     }
     exit();
 }

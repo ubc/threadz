@@ -121,6 +121,7 @@ if(error_log($msg2, 3, $logFile)){
 else{
     echo '[ERROR]messge 2 failed to log.';
 }
+error_log("[launch.php]".$_SESSION, 3, $logFile);
 
 exit();
 

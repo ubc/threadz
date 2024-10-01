@@ -84,6 +84,8 @@ if($_SESSION['token_state_id'] == $state_test){
     $logFile = "threadz.log";
 
     $msg1 = "[tokenAuth.php] request = " . $state_test . "\n";
+
+    // $_SESSION['token_state_id'] return ''.
     $msg2 = "[tokenAuth.php] session = " . $_SESSION['token_state_id'] . "\n";
 
     if(error_log($msg1, 3, $logFile)){
@@ -97,6 +99,10 @@ if($_SESSION['token_state_id'] == $state_test){
     }
     else{
         echo '[ERROR]messge 1 failed to log.';
+    }
+    foreach($_SESSION as $key=>$val){
+        $session_msg = "[tokenAuth.php] session key: ".$key.", value: ".$value;
+        error_log($session_msg, 3, $logFile);
     }
     exit();
 }

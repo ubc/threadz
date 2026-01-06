@@ -17,6 +17,8 @@ function getCanvasAPIcurl($authorization, $url){
             $curl = curl_init();
             // Set some options - we are passing in a useragent too here
             curl_setopt($curl, CURLOPT_URL,$url);
+
+            curl_setopt($curl, CURLOPT_USERAGENT, 'Threadz');
             //curl_setopt($curl, CURLOPT_PROXY, $_SESSION['proxy']);
             curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'Accept: application/json', $authorization ));
             curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
@@ -34,7 +36,7 @@ function getCanvasAPIcurl($authorization, $url){
                 curl_close($curl);
                 exit();
             }
-            
+
             // Close request to clear up some resources
             curl_close($curl);
 
@@ -48,9 +50,9 @@ function getCanvasAPIcurl($authorization, $url){
 }
 function getCanvasHeaderLinks($header){
         //The header Canvas returns for the curent, next, first, and last links is formated like:
-            //  <https://[domainLMS]/api/v1/courses/[courseID]/enrollments?page=1&per_page=3>; rel="current",  
-            //  <https://[domainLMS]/api/v1/courses/[courseID]/enrollments?page=2&per_page=3>; rel="next",  
-            //  <https://[domainLMS]/api/v1/courses/[courseID]/enrollments?page=1&per_page=3>; rel="first",  
+            //  <https://[domainLMS]/api/v1/courses/[courseID]/enrollments?page=1&per_page=3>; rel="current",
+            //  <https://[domainLMS]/api/v1/courses/[courseID]/enrollments?page=2&per_page=3>; rel="next",
+            //  <https://[domainLMS]/api/v1/courses/[courseID]/enrollments?page=1&per_page=3>; rel="first",
             //  <https://[domainLMS]/api/v1/courses/[courseID]/enrollments?page=2&per_page=3>; rel="last"
         //We need to extract the links to determine if there are more pages of data in the API.
         //Note: until we started removing the < and > characters, the content between was hidden (see below).  I don't understand why, but removing them solved that issue.
@@ -72,7 +74,7 @@ function getCanvasHeaderLinks($header){
             $pos2a = 0;
             if($key != 0){
                 //Because the link precedes name, splitting the array at 'rel=' places the name into the following key.
-                //To place the name in as the key, we find the 
+                //To place the name in as the key, we find the
                 $pos1a = strpos($val,'"');
                 $pos2a = strpos($val,'"', 1);
                 $title = substr($val, $pos1a+1, $pos2a-1);
@@ -80,7 +82,7 @@ function getCanvasHeaderLinks($header){
                     $headerLinks[$title] = str_replace($headerReplace, "", substr($links[$key-1],$pos1b));
                 }else{
                     $headerLinks[$title] = str_replace($headerReplace, "", substr($links[$key-1],$pos2b+2));
-                    
+
                 }
             }
             $pos1b= $pos1a;
@@ -110,7 +112,7 @@ function getCanvasRoster($arrCurlRoster, $authorization){
         }
         //if there are more records to be returned, Canvas will have the link in the url in the header
         if(array_key_exists('next', $arrCurlRoster['headerLinks'])){
-	    $link_roster = trim($arrCurlRoster['headerLinks']['next']);	
+	    $link_roster = trim($arrCurlRoster['headerLinks']['next']);
 	    $arrCurlRoster=getCanvasAPIcurl($authorization, $link_roster);
             getCanvasRoster($arrCurlRoster, $authorization);
         }
@@ -156,7 +158,7 @@ function getCanvasTopicList($arrCurlTopics, $authorization){
             $arrCurlTopic=getCanvasAPIcurl($authorization, $urlTopic);
 
             getCanvasTopicData($arrCurlTopic, $authorization, $topic_id);
-            
+
             //create HTML display Topic list for published discussions and with discussions with one or more posts.
             if($topic['published'] == true && $topic['discussion_subentry_count']>0){
                 $_SESSION['select_list_option'] .="<option value='".$topic_id."'>".$topic_title."</option>";
@@ -171,7 +173,7 @@ function getCanvasTopicList($arrCurlTopics, $authorization){
 //exit();
         //if there are more records to be returned, Canvas will have the link in the url in the header
         if(array_key_exists('next', $arrCurlTopics['headerLinks'])){
-	    $link_topics = trim($arrCurlTopics['headerLinks']['next']);	
+	    $link_topics = trim($arrCurlTopics['headerLinks']['next']);
 	    $arrCurlTopics = getCanvasAPIcurl($authorization, $arrCurlTopics['headerLinks']['next']);
             getCanvasTopicList($arrCurlTopics);
         }
@@ -179,7 +181,7 @@ function getCanvasTopicList($arrCurlTopics, $authorization){
 function getCanvasTopicData($arrCurlTopic, $authorization, $topic_id){
         //save individual discussion topic post data into SESSION using the topic id as the key name
         $jsonData = json_decode($arrCurlTopic['body'], true);
-	
+
         #if($jsonData.status != "unauthenticated"){
             $_SESSION['json_'.$topic_id] = $jsonData;
             $_SESSION['arrTopics'][$topic_id]['json'] = $jsonData;
@@ -204,7 +206,7 @@ function getCanvasTopicData($arrCurlTopic, $authorization, $topic_id){
             //    'require_initial_post' => $topic['allow_rating'],
             //    'unread_count' => $topic['unread_count'],
             //);
-            
+
             //if there are more records to be returned, Canvas will have the link in the url in the header
 	    if($arrCurlTopic['headerLinks']){
 		$link_topics = trim($arrCurlTopic['headerLinks']['next']);
